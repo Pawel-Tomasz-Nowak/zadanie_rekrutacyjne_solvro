@@ -1,4 +1,7 @@
-﻿# Byte-compiled / optimized files
+﻿# My own directories
+src/data/generated_data/
+
+# Byte-compiled / optimized files
 __pycache__/
 *.py[cod]
 *$py.class
