@@ -14,9 +14,23 @@ Y_MIN, Y_MAX = Y_RANGE
 
 ORIGIN: Final[tuple[float, float]] = (0.0, 0.0)
 
-PLOT_WIDTH: Final[int] = 5
-PLOT_HEIGHT: Final[int] = 5
-PLOT_DPI: Final[int] = 100
+PLOT_DPI: Final[int] = 125
+IMAGE_WIDTH_MIN: Final[int] = 500
+IMAGE_WIDTH_MAX: Final[int] = 1000
+IMAGE_HEIGHT_MIN: Final[int] = 500
+IMAGE_HEIGHT_MAX: Final[int] = 1000
+MARKER_SIZE_MIN: Final[int] = 6
+MARKER_SIZE_MAX: Final[int] = 30
+MARKER_COLORS: Final[tuple[str, ...]] = (
+    "red",
+    "blue",
+    "green",
+    "orange",
+    "purple",
+    "brown",
+    "magenta",
+    "cyan",
+)
 
 NOISE_STD: Final[float] = 1.0
 RANDOM_SEED: Final[int] = 42
