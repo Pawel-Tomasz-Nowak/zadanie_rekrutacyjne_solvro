@@ -1,4 +1,4 @@
-"""Configuration constants for synthetic plot generation."""
+"""Wspólne stałe wykorzystywane przez generator danych i pipeline detekcji."""
 
 from typing import Final
 
