@@ -6,8 +6,8 @@ import sys
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from scatter_detection.main.utils.configuration import create_configuration
-from scatter_detection.main.utils.detection import detect_points, isolate_plot_area, pixel_to_value
+from src.scatter_detection.utils.configuration import create_configuration
+from src.scatter_detection.utils.detection import detect_points, isolate_plot_area, pixel_to_value
 
 
 def run_pipeline(project_root: str | Path | None = None) -> None:

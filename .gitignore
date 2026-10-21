@@ -1,6 +1,7 @@
 ﻿# My own directories
-src/data/generated_data/
-
+*.json
+*.png
+*.txt
 # Byte-compiled / optimized files
 __pycache__/
 *.py[cod]
@@ -45,3 +46,4 @@ logs/
 .idea/
 .DS_Store
 Thumbs.db
+.codegraphy/*
