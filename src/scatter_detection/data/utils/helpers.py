@@ -1,8 +1,4 @@
 """Funkcje pomocnicze do generowania zsyntetyzowanych danych benchmarkowych.
-
-Wartości i nazwy błędów są po polsku, żeby kod był czytelniejszy dla osoby
-pracującej nad pipeline'em CV. Dodatkowo, funkcje były lekko uporządkowane tak,
-żeby łatwiej utrzymać je w przyszłości.
 """
 
 from collections.abc import Callable, Sequence
@@ -43,13 +39,6 @@ def generate_x_values(
         if random_generator is None:
             raise ValueError("Do próbkowania losowego wymagany jest random_generator.")
         normalized_values = np.sort(random_generator.uniform(0.0, 1.0, n_points))
-    elif strategy == "clustered":
-        if random_generator is None:
-            raise ValueError("Do próbkowania skupionego wymagany jest random_generator.")
-        center = random_generator.uniform(0.2, 0.8)
-        spread = random_generator.uniform(0.08, 0.2)
-        normalized_values = np.clip(random_generator.normal(center, spread, n_points), 0.0, 1.0)
-        normalized_values.sort()
     elif strategy == "mixed":
         if random_generator is None:
             raise ValueError("Do próbkowania mieszanego wymagany jest random_generator.")
@@ -74,18 +63,11 @@ def create_polynomial(coefficients: Sequence[float]) -> Callable[[NDArray[np.flo
     return polynomial_function
 
 
-def _make_exponential() -> Callable[[NDArray[np.float64]], NDArray[np.float64]]:
-    def function(x_values: NDArray[np.float64]) -> NDArray[np.float64]:
-        return 2.0 ** (0.2 * x_values)
-
-    return function
-
 
 def _make_trigonometric_functions() -> list[Callable[[NDArray[np.float64]], NDArray[np.float64]]]:
     return [
         lambda x_values: np.tan(x_values),
-        lambda x_values: np.sin(x_values),
-        lambda x_values: np.cos(x_values),
+        lambda x_values: np.sin(x_values)
     ]
 
 
@@ -115,16 +97,6 @@ def _make_gaussian_mixture() -> Callable[[NDArray[np.float64]], NDArray[np.float
     return function
 
 
-def _make_piecewise_function() -> Callable[[NDArray[np.float64]], NDArray[np.float64]]:
-    def function(x_values: NDArray[np.float64]) -> NDArray[np.float64]:
-        return np.select(
-            [x_values < -1.0, x_values < 4.0],
-            [2.0 + np.sin(x_values), 3.0 + 0.6 * x_values],
-            default=6.0 - np.exp(-0.5 * (x_values - 4.0)),
-        )
-
-    return function
-
 
 def _make_composite_function() -> Callable[[NDArray[np.float64]], NDArray[np.float64]]:
     def function(x_values: NDArray[np.float64]) -> NDArray[np.float64]:
@@ -143,19 +115,17 @@ def create_plot_functions(
 ) -> dict[str, list[Callable[[NDArray[np.float64]], NDArray[np.float64]]]]:
     """Tworzy zestaw benchmarkowych rodzin funkcji dla generatora wykresów."""
     polynomial_coefficients = [
-        random_generator.uniform(0.0, 1.0, size=degree)
-        for degree in range(1, 5)
+        random_generator.uniform(0.0, 2.0, size=degree)
+        for degree in range(1, 4)
     ]
     polynomials = [create_polynomial(values) for values in polynomial_coefficients]
 
     functions: dict[str, list[Callable[[NDArray[np.float64]], NDArray[np.float64]]]] = {
         "polynomials": polynomials,
-        "exponentials": [_make_exponential()],
         "trigonometric": _make_trigonometric_functions(),
         "damped_oscillations": [_make_damped_oscillation()],
         "sigmoids": [_make_sigmoid()],
         "gaussian_mixtures": [_make_gaussian_mixture()],
-        "piecewise": [_make_piecewise_function()],
         "composite": [_make_composite_function()],
     }
 

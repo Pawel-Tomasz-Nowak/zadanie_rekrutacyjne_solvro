@@ -21,16 +21,10 @@ IMAGE_HEIGHT_MIN: Final[int] = 500
 IMAGE_HEIGHT_MAX: Final[int] = 1000
 MARKER_SIZE_MIN: Final[int] = 6
 MARKER_SIZE_MAX: Final[int] = 30
-MARKER_COLORS: Final[tuple[str, ...]] = (
-    "red",
-    "blue",
-    "green",
-    "orange",
-    "purple",
-    "brown",
-    "magenta",
-    "cyan",
-)
+X_SAMPLING_STRATEGIES = ("uniform", "power", "random","mixed")
+PLOT_STYLES = ("scatter_plot", "line_scatter_plot")
+
 
 NOISE_STD: Final[float] = 1.0
 RANDOM_SEED: Final[int] = 42
+N: Final[int] = 4
