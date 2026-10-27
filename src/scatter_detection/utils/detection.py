@@ -74,6 +74,75 @@ def detect_points(plot_image, config: dict, min_area: int = 8, max_area: int = 5
     return detected_points
 
 
+def remove_thin_structures(
+    foreground_mask,
+    distance_threshold: float = 2.0,
+):
+    """Zostawia zwarte fragmenty markerów i usuwa cienkie struktury, np. linie."""
+    if foreground_mask is None or foreground_mask.size == 0:
+        raise ValueError("Nie można usunąć linii z pustej maski.")
+    if distance_threshold <= 0:
+        raise ValueError("Próg odległości musi być większy od zera.")
+
+    distance_map = cv2.distanceTransform(
+        foreground_mask,
+        cv2.DIST_L2,
+        cv2.DIST_MASK_PRECISE,
+    )
+    marker_core_mask = cv2.inRange(
+        distance_map,
+        distance_threshold,
+        float(distance_map.max()),
+    )
+    return marker_core_mask
+
+
+def detect_points_line_aware(
+    plot_image,
+    config: dict,
+    min_area: int = 2,
+    max_area: int = 500,
+    distance_threshold: float = 2.0,
+):
+    """Wykrywa markery po odrzuceniu cienkich linii łączących punkty."""
+    foreground_mask = create_image_mask(plot_image)
+    marker_core_mask = remove_thin_structures(
+        foreground_mask,
+        distance_threshold=distance_threshold,
+    )
+    number_of_labels, _, stats, centroids = cv2.connectedComponentsWithStats(
+        marker_core_mask,
+        connectivity=8,
+    )
+
+    xmin, ymin, _, _ = config["plot_bbox"]
+    detected_points = []
+
+    for label in range(1, number_of_labels):
+        area = int(stats[label, cv2.CC_STAT_AREA])
+        width = int(stats[label, cv2.CC_STAT_WIDTH])
+        height = int(stats[label, cv2.CC_STAT_HEIGHT])
+
+        if not (min_area <= area <= max_area):
+            continue
+        if width == 0 or height == 0:
+            continue
+
+        aspect_ratio = width / height
+        if aspect_ratio < 0.5 or aspect_ratio > 2.0:
+            continue
+
+        x_local, y_local = centroids[label]
+        detected_points.append(
+            {
+                "x_px": float(x_local + xmin),
+                "y_px": float(y_local + ymin),
+            }
+        )
+
+    return detected_points
+
+
 def pixel_to_value(points: list[dict[str, float]], calibration: dict) -> list[dict[str, float]]:
     """Konwertuje współrzędne pikselowe punktów na wartości osi wykresu."""
     x_axis = calibration["x_axis"]
