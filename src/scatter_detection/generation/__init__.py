@@ -1,0 +1,1 @@
+"""Tworzenie syntetycznego zbioru danych benchmarkowych."""

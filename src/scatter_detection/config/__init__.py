@@ -1,0 +1,1 @@
+"""Konfiguracja wspólna dla generatora, detekcji i ewaluacji."""

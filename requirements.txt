@@ -1,1 +1,6 @@
-﻿
+numpy
+matplotlib
+ipykernel
+opencv-python
+polars
+ipywidgets

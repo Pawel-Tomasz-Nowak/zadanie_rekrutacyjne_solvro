@@ -1,4 +1,7 @@
-﻿# Byte-compiled / optimized files
+﻿# Directories full of images, their metadata and configuration files
+src/scatter_detection/data/generated_data
+
+# Byte-compiled / optimized files
 __pycache__/
 *.py[cod]
 *$py.class
@@ -42,3 +45,4 @@ logs/
 .idea/
 .DS_Store
 Thumbs.db
+.codegraphy/*

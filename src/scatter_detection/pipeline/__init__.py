@@ -1,0 +1,1 @@
+"""Punkty wejścia uruchamiające przetwarzanie zbioru danych."""
