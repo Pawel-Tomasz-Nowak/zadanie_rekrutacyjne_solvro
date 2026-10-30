@@ -1,5 +1,4 @@
-"""Funkcje pomocnicze do generowania zsyntetyzowanych danych benchmarkowych.
-"""
+"""Wspólne mechanizmy próbkowania i budowania funkcji benchmarkowych."""
 
 from collections.abc import Callable, Sequence
 

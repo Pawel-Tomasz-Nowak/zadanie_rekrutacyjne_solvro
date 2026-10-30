@@ -1,9 +1,4 @@
-"""Generator syntetycznych wykresów rozrzutowych i ich metadanych GT.
-
-Moduł odpowiada za produkcję obrazów PNG oraz plików JSON z prawdziwymi
-współrzędnymi punktów. Wspólny zestaw stałych jest importowany z
-``src.scatter_detection.constants``.
-"""
+"""Generowanie obrazów benchmarkowych i odpowiadających im metadanych GT."""
 
 import json
 import sys
@@ -13,9 +8,9 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 import numpy as np
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
-from scatter_detection.constants import (
+from scatter_detection.config.constants import (
     IMAGE_HEIGHT_MAX,
     IMAGE_HEIGHT_MIN,
     IMAGE_WIDTH_MAX,
@@ -31,10 +26,10 @@ from scatter_detection.constants import (
     X_RANGE,
     Y_MAX,
     Y_MIN,
+    PLOT_STYLES,
     X_SAMPLING_STRATEGIES,
-    PLOT_STYLES
 )
-from scatter_detection.data.utils.helpers import create_plot_functions, generate_x_values
+from scatter_detection.generation.helpers import create_plot_functions, generate_x_values
 
 
 def _display_progress(completed: int, total: int) -> None:
@@ -45,8 +40,10 @@ def _display_progress(completed: int, total: int) -> None:
     print(f"\rGenerowanie obrazów: [{progress_bar}] {completed}/{total}", end="", flush=True)
 
 
-def generate_plots(output_dir: Path | str = Path(__file__).parent / "generated_data") -> None:
-    """Generuje obrazy i metadane GT dla wszystkich funkcji benchmarkowych."""
+def generate_plots(
+    output_dir: Path | str = Path(__file__).resolve().parents[1] / "data" / "generated_data",
+) -> None:
+    """Generuje zbalansowany zbiór obrazów do porównywania detekcji."""
     output_root = Path(output_dir)
     image_dir = output_root / "images"
     json_dir = output_root / "metadata"
