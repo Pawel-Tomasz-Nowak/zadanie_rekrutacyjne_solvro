@@ -4,10 +4,13 @@ from __future__ import annotations
 
 import json
 import math
+import sys
 from pathlib import Path
 from typing import Any
 
 import polars as pl
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from scatter_detection.config.constants import X_RANGE, Y_RANGE
 

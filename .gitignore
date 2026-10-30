@@ -1,7 +1,6 @@
-﻿# My own directories
-*.json
-*.png
-*.txt
+﻿# Directories full of images, their metadata and configuration files
+src/scatter_detection/data/generated_data
+
 # Byte-compiled / optimized files
 __pycache__/
 *.py[cod]
