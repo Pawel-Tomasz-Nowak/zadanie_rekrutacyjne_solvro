@@ -1,13 +1,13 @@
-"""Punkt wejścia do pipeline'u detekcji punktów w projekcie scatter_detection."""
+"""Uruchomienie pipeline'u detekcji dla całego zbioru obrazów."""
 
-from pathlib import Path
 import json
 import sys
+from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
-from scatter_detection.utils.configuration import create_configuration
-from scatter_detection.utils.detection import (
+from scatter_detection.detection.configuration import create_configuration
+from scatter_detection.detection.point_detection import (
     detect_points,
     detect_points_line_aware,
     isolate_plot_area,
@@ -25,7 +25,7 @@ def _display_progress(completed: int, total: int) -> None:
 
 def run_pipeline(project_root: str | Path | None = None) -> None:
     """Przetwarza wszystkie obrazy w katalogu generated_data i zapisuje wykryte punkty."""
-    root = Path(project_root) if project_root is not None else Path(__file__).resolve().parent.parent.parent
+    root = Path(project_root) if project_root is not None else Path(__file__).resolve().parents[3]
     data_dir = root / "src" / "scatter_detection" / "data" / "generated_data"
     images_path = data_dir / "images"
     metadata_dir = data_dir / "metadata"

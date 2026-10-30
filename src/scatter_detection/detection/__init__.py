@@ -1,0 +1,1 @@
+"""Konfiguracja obrazu i algorytmy wykrywania punktów."""

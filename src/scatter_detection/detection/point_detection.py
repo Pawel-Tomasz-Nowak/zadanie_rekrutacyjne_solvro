@@ -1,10 +1,10 @@
-"""Moduł odpowiedzialny za izolację obszaru wykresu oraz wykrywanie punktów."""
+"""Operacje przygotowujące kadr i wydzielające markery z obrazu wykresu."""
 
 import cv2
 
 
 def isolate_plot_area(image, config: dict):
-    """Wyodrębnia obszar wykresu z pełnego obrazu w oparciu o konfigurację."""
+    """Ogranicza analizę do obszaru, w którym mogą znajdować się dane."""
     if image is None:
         raise ValueError("Nie da się wyizolować wykresu z pustego obrazu.")
 
@@ -25,7 +25,7 @@ def isolate_plot_area(image, config: dict):
 
 
 def create_image_mask(plot_image, background_threshold: int = 245):
-    """Tworzy maskę foregroundu, która odfiltrowuje jasne tło i zachowuje markery wykresu."""
+    """Oddziela ciemne elementy wykresu od jasnego tła przed analizą komponentów."""
     if plot_image is None or plot_image.size == 0:
         raise ValueError("Nie można stworzyć maski z pustego obrazu wykresu.")
 
@@ -42,7 +42,7 @@ def create_image_mask(plot_image, background_threshold: int = 245):
 
 
 def detect_points(plot_image, config: dict, min_area: int = 8, max_area: int = 500):
-    """Wykrywa centroidy punktów z wyizolowanego wykresu i zwraca ich współrzędne pikselowe."""
+    """Wybiera zwarte komponenty, aby odrzucić osie i przypadkowe artefakty obrazu."""
     mask = create_image_mask(plot_image)
     number_of_labels, _, stats, centroids = cv2.connectedComponentsWithStats(mask, connectivity=8)
 
@@ -78,7 +78,7 @@ def remove_thin_structures(
     foreground_mask,
     distance_threshold: float = 2.0,
 ):
-    """Zostawia zwarte fragmenty markerów i usuwa cienkie struktury, np. linie."""
+    """Usuwa cienkie połączenia, których obecność zniekształcałaby detekcję markerów."""
     if foreground_mask is None or foreground_mask.size == 0:
         raise ValueError("Nie można usunąć linii z pustej maski.")
     if distance_threshold <= 0:
@@ -104,7 +104,7 @@ def detect_points_line_aware(
     max_area: int = 500,
     distance_threshold: float = 2.0,
 ):
-    """Wykrywa markery po odrzuceniu cienkich linii łączących punkty."""
+    """Wykorzystuje rdzenie markerów, żeby ograniczyć wpływ linii w wykresach łączonych."""
     foreground_mask = create_image_mask(plot_image)
     marker_core_mask = remove_thin_structures(
         foreground_mask,
@@ -144,7 +144,7 @@ def detect_points_line_aware(
 
 
 def pixel_to_value(points: list[dict[str, float]], calibration: dict) -> list[dict[str, float]]:
-    """Konwertuje współrzędne pikselowe punktów na wartości osi wykresu."""
+    """Przenosi wyniki detekcji do skali danych użytej w metadanych GT."""
     x_axis = calibration["x_axis"]
     y_axis = calibration["y_axis"]
 
