@@ -49,7 +49,7 @@ def detect_points(plot_image, config: dict, min_area: int = 8, max_area: int = 5
     xmin, ymin, _, _ = config["plot_bbox"]
     detected_points = []
 
-    for label in range(1, number_of_labels):
+    for label in range(number_of_labels):
         area = int(stats[label, cv2.CC_STAT_AREA])
         width = int(stats[label, cv2.CC_STAT_WIDTH])
         height = int(stats[label, cv2.CC_STAT_HEIGHT])
