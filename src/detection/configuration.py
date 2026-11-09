@@ -6,7 +6,7 @@ from pathlib import Path
 import cv2
 import matplotlib.pyplot as plt
 
-from scatter_detection.config.constants import X_MAX, X_MIN, Y_MAX, Y_MIN
+from config.constants import X_MAX, X_MIN, Y_MAX, Y_MIN
 from math import floor, ceil
 
 def compute_image_boundaries(image_width: int, image_height: int) -> tuple[int, int, int, int]:

@@ -4,10 +4,10 @@ import json
 import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from scatter_detection.detection.configuration import create_configuration
-from scatter_detection.detection.point_detection import (
+from detection.configuration import create_configuration
+from detection.point_detection import (
     detect_points,
     detect_points_line_aware,
     isolate_plot_area,
@@ -25,8 +25,8 @@ def _display_progress(completed: int, total: int) -> None:
 
 def run_pipeline(project_root: str | Path | None = None) -> None:
     """Przetwarza wszystkie obrazy w katalogu generated_data i zapisuje wykryte punkty."""
-    root = Path(project_root) if project_root is not None else Path(__file__).resolve().parents[3]
-    data_dir = root / "src" / "scatter_detection" / "data" / "generated_data"
+    root = Path(project_root) if project_root is not None else Path(__file__).resolve().parents[2]
+    data_dir = root / "src" / "data" / "generated_data"
     images_path = data_dir / "images"
     metadata_dir = data_dir / "metadata"
     config_dir = data_dir / "configs"

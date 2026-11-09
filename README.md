@@ -58,7 +58,7 @@ przy aktywnym środowisku `cv_rek`.
 ### 1. Generowanie danych
 
 ```powershell
-python src\scatter_detection\generation\data_generation.py
+python src\generation\data_generation.py
 ```
 
 Generator:
@@ -73,7 +73,7 @@ Generator:
 Dane trafiają do:
 
 ```text
-src\scatter_detection\data\generated_data\
+src\data\generated_data\
 ├── images\
 └── metadata\
 ```
@@ -83,7 +83,7 @@ Podczas generowania wyświetlany jest pasek postępu.
 ### 2. Detekcja punktów
 
 ```powershell
-python src\scatter_detection\pipeline\main.py
+python src\pipeline\main.py
 ```
 
 Pipeline dla każdego obrazu:
@@ -98,19 +98,19 @@ Pipeline dla każdego obrazu:
 Dodatkowo pipeline zapisuje konfiguracje użyte do kalibracji w:
 
 ```text
-src\scatter_detection\data\generated_data\configs\
+src\data\generated_data\configs\
 ```
 
 Wyniki detekcji są zapisywane w:
 
 ```text
-src\scatter_detection\data\generated_data\detected_points\
+src\data\generated_data\detected_points\
 ```
 
 ### 3. Przygotowanie tabeli ewaluacyjnej
 
 ```powershell
-python src\scatter_detection\evaluation\data_preparation.py
+python src\evaluation\data_preparation.py
 ```
 
 Skrypt dopasowuje punkty przewidziane przez detektor do punktów ground truth
@@ -125,7 +125,7 @@ z użyciem tolerancji zależnej od zakresu osi. Następnie wylicza między innym
 Wyniki są zapisywane jako:
 
 ```text
-src\scatter_detection\data\evaluation\
+src\data\evaluation\
 ├── detection_evaluation.csv
 └── detection_evaluation.parquet
 ```
@@ -134,7 +134,7 @@ src\scatter_detection\data\evaluation\
 
 Notebook znajduje się w:
 
-[src/scatter_detection/evaluation/evaluation.ipynb](src/scatter_detection/evaluation/evaluation.ipynb)
+[src/evaluation/evaluation.ipynb](src/evaluation/evaluation.ipynb)
 
 Można otworzyć go w VS Code i wybrać interpreter z `cv_rek`, a następnie
 uruchomić komórki po kolei. Notebook agreguje wyniki według:
@@ -153,33 +153,31 @@ uruchomić komórki po kolei. Notebook agreguje wyniki według:
 ├── experiments\                    # eksperymenty i materiały pomocnicze
 ├── instructions\                  # dodatkowe instrukcje projektu
 ├── src\
-│   ├── scatter_detection\
-│   │   ├── config\
-│   │   │   └── constants.py        # zakresy osi i parametry generatora
-│   │   ├── data\
-│   │   │   ├── generated_data\     # obrazy, metadane i wyniki detekcji
-│   │   │   └── evaluation\        # CSV/Parquet z wynikami
-│   │   ├── detection\
-│   │   │   ├── configuration.py    # geometria obrazu i kalibracja
-│   │   │   ├── point_detection.py  # maskowanie i detekcja punktów
-│   │   │   └── readme.md
-│   │   ├── evaluation\
-│   │   │   ├── data_preparation.py # metryki i tabela wyników
-│   │   │   └── evaluation.ipynb    # analiza i wykresy
-│   │   ├── generation\
-│   │   │   ├── data_generation.py  # generator obrazów i ground truth
-│   │   │   └── helpers.py          # próbkowanie i funkcje benchmarkowe
-│   │   └── pipeline\
-│   │       └── main.py             # uruchomienie detekcji dla całego zbioru
-│   └── __init__.py
+│   ├── config\
+│   │   └── constants.py            # zakresy osi i parametry generatora
+│   ├── data\
+│   │   ├── generated_data\         # obrazy, metadane i wyniki detekcji
+│   │   └── evaluation\             # CSV/Parquet z wynikami
+│   ├── detection\
+│   │   ├── configuration.py        # geometria obrazu i kalibracja
+│   │   └── point_detection.py      # maskowanie i detekcja punktów
+│   ├── evaluation\
+│   │   ├── data_preparation.py     # metryki i tabela wyników
+│   │   └── evaluation.ipynb        # analiza i wykresy
+│   ├── generation\
+│   │   ├── data_generation.py      # generator obrazów i ground truth
+│   │   └── helpers.py              # próbkowanie i funkcje benchmarkowe
+│   └── pipeline\
+│       └── main.py                 # uruchomienie detekcji dla całego zbioru
 ├── requirements.txt
 └── README.md
 ```
 
-Podział kodu odzwierciedla przepływ danych: `generation` tworzy dane,
-`detection` zawiera algorytmy, `pipeline` spina przetwarzanie, a `evaluation`
-porównuje wyniki z ground truth. Katalog `data` przechowuje artefakty, a nie
-logikę aplikacji.
+Katalog `src` jest głównym katalogiem kodu i nie zawiera dodatkowego pakietu
+`scatter_detection`. Podział jego podkatalogów odzwierciedla przepływ danych:
+`generation` tworzy dane, `detection` zawiera algorytmy, `pipeline` spina
+przetwarzanie, a `evaluation` porównuje wyniki z ground truth. Katalog `data`
+przechowuje artefakty, a nie logikę aplikacji.
 
 ## Jak działa detekcja
 
@@ -199,7 +197,7 @@ linii na wynik.
 ## Fundamentalne wyniki
 
 Poniższe wartości pochodzą z aktualnego pliku
-`src\scatter_detection\data\evaluation\detection_evaluation.csv`.
+`src\data\evaluation\detection_evaluation.csv`.
 Zbiór zawiera 576 obrazów, czyli 1152 wiersze wyników — po jednym wyniku dla
 każdej metody detekcji na każdym obrazie.
 

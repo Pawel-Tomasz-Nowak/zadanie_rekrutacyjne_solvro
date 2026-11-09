@@ -1,5 +1,5 @@
 ﻿# Directories full of images, their metadata and configuration files
-src/scatter_detection/data/generated_data
+src/data/generated_data
 
 # Byte-compiled / optimized files
 __pycache__/

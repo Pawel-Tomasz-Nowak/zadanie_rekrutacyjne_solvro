@@ -10,9 +10,9 @@ from typing import Any
 
 import polars as pl
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from scatter_detection.config.constants import X_RANGE, Y_RANGE
+from config.constants import X_RANGE, Y_RANGE
 
 
 DETECTION_METHODS = ("baseline", "line_aware")
@@ -140,9 +140,9 @@ def prepare_evaluation_dataframe(
     root = (
         Path(project_root)
         if project_root is not None
-        else Path(__file__).resolve().parents[3]
+        else Path(__file__).resolve().parents[2]
     )
-    generated_data = root / "src" / "scatter_detection" / "data" / "generated_data"
+    generated_data = root / "src" / "data" / "generated_data"
     metadata_dir = generated_data / "metadata"
     detected_points_dir = generated_data / "detected_points"
     tolerance = compute_matching_tolerance(relative_tolerance)

@@ -8,9 +8,9 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 import numpy as np
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from scatter_detection.config.constants import (
+from config.constants import (
     IMAGE_HEIGHT_MAX,
     IMAGE_HEIGHT_MIN,
     IMAGE_WIDTH_MAX,
@@ -29,7 +29,7 @@ from scatter_detection.config.constants import (
     PLOT_STYLES,
     X_SAMPLING_STRATEGIES,
 )
-from scatter_detection.generation.helpers import create_plot_functions, generate_x_values
+from generation.helpers import create_plot_functions, generate_x_values
 
 
 def _display_progress(completed: int, total: int) -> None:
